@@ -1,37 +1,61 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { addContact } from '../../redux/contactsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from '../../redux/contactsOps';
+import { selectContacts } from '../../redux/contactsSlice';
 import css from './ContactForm.module.css';
 
-export const ContactForm = () => {
+function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
 
   const handleSubmit = e => {
     e.preventDefault();
-    dispatch(addContact({ id: crypto.randomUUID(), name, number }));
+
+    const isExist = contacts.some(
+      contact => contact.name.toLowerCase() === name.toLowerCase(),
+    );
+
+    if (isExist) {
+      alert(`${name} is already in contacts`);
+      return;
+    }
+
+    dispatch(addContact({ name, number }));
     setName('');
     setNumber('');
   };
 
   return (
     <form className={css.form} onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="name"
-        value={name}
-        onChange={e => setName(e.target.value)}
-        required
-      />
-      <input
-        type="tel"
-        name="number"
-        value={number}
-        onChange={e => setNumber(e.target.value)}
-        required
-      />
-      <button type="submit">Add contact</button>
+      <label className={css.label}>
+        Name
+        <input
+          className={css.input}
+          type="text"
+          name="name"
+          value={name}
+          onChange={e => setName(e.target.value)}
+          required
+        />
+      </label>
+      <label className={css.label}>
+        Number
+        <input
+          className={css.input}
+          type="tel"
+          name="number"
+          value={number}
+          onChange={e => setNumber(e.target.value)}
+          required
+        />
+      </label>
+      <button className={css.button} type="submit">
+        Add contact
+      </button>
     </form>
   );
-};
+}
+
+export default ContactForm;

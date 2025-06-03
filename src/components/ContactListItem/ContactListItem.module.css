@@ -1,11 +1,21 @@
 .item {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  border: 1px solid #ddd;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border: 1px solid #eee;
   border-radius: 4px;
   margin-bottom: 8px;
+}
+
+.name {
+  font-weight: 500;
+  margin-right: 8px;
+}
+
+.number {
+  margin-right: auto;
+  color: #666;
 }
 
 .button {
@@ -15,6 +25,7 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .button:hover {
